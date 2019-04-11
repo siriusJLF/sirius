@@ -1,0 +1,37 @@
+html{
+	font-family: "microsoft yahei";
+	font-size: 14px;
+}
+body,html{
+	padding: 0;
+	margin: 0;
+}
+ul,ol,li,h1,h2,h3,h4,h5,h6{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.page-title{
+	line-height: 80px;
+	padding: 0 20px;
+}
+.cont{
+	height: 200px;
+	width: 100%;
+}
+.botom-b{
+	height: 2px;
+	width: 100%;
+	background: #FF751A;
+}
+.testul{
+	padding: 10px;
+}
+.testul li{
+	padding: 10px;
+	
+}
+.testul li.active{
+	background: #FF751A;
+	color: white;
+}

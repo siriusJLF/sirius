@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.light{
+				position: absolute;
+				top: 50%;
+				transform: translate(0,-50%);
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+				height: 80px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 80px;
+				border-radius: 100%;
+				background: greenyellow;
+				z-index: 2;
+			}
+			.light p{
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				z-index: 5;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+			}
+			.light:before{
+				content: "";
+				display: block;
+				height: 80px;
+				width: 80px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				border-radius: 100%;
+				background: greenyellow;
+				animation: biger 2s linear infinite;
+				animation-delay:1s;
+				z-index: 1;
+			}
+			.light:after{
+				content: "";
+				display: block;
+				height: 80px;
+				width: 80px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				border-radius: 100%;
+				background: greenyellow;
+				animation: biger 2s linear infinite;
+				z-index: 1;
+			}
+			@keyframes biger
+			{
+			from {height: 80px;width: 80px;opacity: 0.7;top: 0;left: 0;}
+			to {height: 180px;width: 180px;opacity: 0;top: -50px;left: -50px;}
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<p>
+				<label>姓名：</label>
+				<input type="text" id="name" />
+			</p>
+			<p>
+				<label>年纪：</label>
+				<input type="text" id="age" />
+			</p>
+			<button onclick="save()">保存</button>
+		</div>
+		<div>
+			<p>
+				<label style="text-decoration: line-through;">姓名：</label>
+				<span id="getname"></span>
+			</p>
+			<p>
+				<label>年纪：</label>
+				<span id="getage"></span>
+			</p>
+			<button onclick="get()">获取</button>
+			<h1>This is header 1</h1>
+			<hr />
+			<p>This is some text</p>
+			<h1>This is header 1</h1>
+			<hr />
+			<p>This is some text</p>
+		</div>
+		<div class="light">
+			<p>hello</p>
+		</div>
+		<script src="jquery.3.3.1.js"></script>
+		<script>
+			function save() {
+				var userEntity = {
+					name: $("#name").val(),
+					age: $("#age").val()
+				};
+
+				// 存储值：将对象转换为Json字符串
+				sessionStorage.setItem('user', JSON.stringify(userEntity));
+
+			}
+
+			function get() {
+				// 取值时：把获取到的Json字符串转换回对象
+				var userJsonStr = sessionStorage.getItem('user');
+				userEntity = JSON.parse(userJsonStr);
+				var get_name = userEntity.name;
+				var get_age = userEntity.age;
+				$("#getname").html(get_name);
+				$("#getage").html(get_age);
+				console.log(userEntity.age); // => tom
+			}
+		</script>
+		<script>
+			Date.prototype.format = function(fmt) { 
+				 var o = { 
+					"M+" : this.getMonth()+1,                 //月份 
+					"d+" : this.getDate(),                    //日 
+					"h+" : this.getHours(),                   //小时 
+					"m+" : this.getMinutes(),                 //分 
+					"s+" : this.getSeconds(),                 //秒 
+					"q+" : Math.floor((this.getMonth()+3)/3), //季度 
+					"S"  : this.getMilliseconds()             //毫秒 
+				}; 
+				if(/(y+)/.test(fmt)) {
+						fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+				}
+				 for(var k in o) {
+					if(new RegExp("("+ k +")").test(fmt)){
+						 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+					 }
+				 }
+				return fmt; 
+			} 
+			function timeFn(d1) {
+				
+				var dateBegin = new Date(d1.replace(/-/g, "/")); //将-转化为/，使用new Date
+				var dateEnd = new Date(); //获取当前时间
+				var dateDiff = dateEnd.getTime() - dateBegin.getTime(); //时间差的毫秒数
+				var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000)); //计算出相差天数
+				// 天数向上舍入
+				var dayAll = Math.ceil(dateDiff / (24 * 3600 * 1000));
+				var leave1 = dateDiff % (24 * 3600 * 1000) //计算天数后剩余的毫秒数
+				var hours = Math.floor(leave1 / (3600 * 1000)) //计算出小时数
+				//计算相差分钟数
+				var leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数
+				var minutes = Math.floor(leave2 / (60 * 1000)) //计算相差分钟数
+				//计算相差秒数
+				var leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数
+				var seconds = Math.round(leave3 / 1000)
+				console.log(" 相差 " + dayDiff + "天 " + hours + "小时 " + minutes + " 分钟" + seconds + " 秒")
+				console.log(dateDiff + "时间差的毫秒数", dayDiff + "计算出相差天数", leave1 + "计算天数后剩余的毫秒数", hours + "计算出小时数", minutes +
+					"计算相差分钟数", seconds + "计算相差秒数");
+				console.log("总共天数：" + dayAll);
+				console.log("当前日期：" + new Date().format("yyyy-MM-dd"))
+				
+			}
+			var t3 = "2018-09-07";
+			timeFn(t3);
+			
+		</script>
+	</body>
+</html>

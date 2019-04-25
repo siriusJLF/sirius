@@ -171,6 +171,27 @@
 			var t3 = "2018-09-07";
 			timeFn(t3);
 			
+			console.log(toThousands(33434445.9876));
+			function toThousands(num) {
+				 var num = (num || 0).toString(), result = '';
+				 var lastf = num.split(".");
+				 num = lastf[0];
+				 while (num.length > 3) {
+					 result = ',' + num.slice(-3) + result;
+					 num = num.slice(0, num.length - 3);
+				 }
+				 if (num) { 
+					 if(lastf[1]){
+						 result = num + result+"."+lastf[1]; 
+					 }else{
+						 result = num + result; 
+					 }
+					 
+					 }
+				 return result;
+			}
+
+			
 		</script>
 	</body>
 </html>

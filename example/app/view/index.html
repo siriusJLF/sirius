@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Title</title>
+    <link rel="stylesheet" href="../public/layui-v2.4.5/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row ">
+        <div class="layui-col-md9" style="padding: 10px;background: greenyellow">
+            你的内容 9/12
+        </div>
+        <div class="layui-col-md3" style="padding: 10px">
+            你的内容 3/12{{list.list}}
+        </div>
+    </div>
+    <div class="layui-row ">
+        <div class="layui-col-md9" style="padding: 10px;background: greenyellow">
+            <ul class="news-view view">
+                {% for item in list.list %}
+                <li class="item">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="layui-col-md3" style="padding: 10px">
+            <a href="/index" target="_parent">点击</a>
+            <a onclick="go()">请求数据</a>
+        </div>
+    </div>
+    <div class="layui-row ">
+        <div class="layui-col-md9" style="padding: 10px;background: greenyellow">
+            <span id="name"></span>
+        </div>
+        <div class="layui-col-md3" style="padding: 10px">
+            <span id="msg"></span>
+        </div>
+    </div>
+    <div id="Content">
+
+    </div>
+
+</div>
+
+</body>
+<script src="../public/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../public/layui-v2.4.5/layui/layui.js"></script>
+<script>
+    window.target = function (url, replaceLabel, form, callBack) {
+        if (url == undefined) return;
+
+        url = (url.indexOf('?') != -1 ? url + '&' : url + '?') + 'no-cache=' + Math.random();
+
+        if (url.indexOf('http') >= 0) {
+            $("#" + replaceLabel).html('<iframe id="iframe" style="width: 100%;"></iframe>');
+            var window_height = $(window).height();
+            $("#iframe")[0].src = url;
+            $("#iframe").css('min-height', window_height);
+        }
+        else {
+            if (replaceLabel.length > 0) {
+                $("#" + replaceLabel).load(url, form, callBack);
+            }
+            else {
+                self.location = url;
+            }
+        }
+
+    }
+
+    function go() {
+        // target('/index', 'Content');
+        $.ajax({
+            type: "GET",
+            url: '/index/data',
+            data: {
+
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.result) {
+                    $("#name").html(data.name);
+                    $("#msg").html(data.msg);
+                }
+            }
+        });
+
+    }
+</script>
+</html>
